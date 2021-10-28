@@ -22,7 +22,7 @@ public class NoticeReg extends HttpServlet{
 		response.setContentType("text/html; charset=UTF-8"); 
 		
 		// 사용자가 보내는 인코딩 방식 설정
-		request.setCharacterEncoding("UTF-8");
+		//request.setCharacterEncoding("UTF-8");
 		
 		PrintWriter out = response.getWriter();
 		
