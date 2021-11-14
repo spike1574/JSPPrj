@@ -47,6 +47,9 @@ public class Calc3 extends HttpServlet{
 			} catch (ScriptException e) {
 				e.printStackTrace();
 			}
+		} else if(operator != null && operator.equals("C")) {
+			exp = "";
+			
 		} else {
 			exp += (value == null) ? "": value;
 			exp += (operator == null) ? "": operator;
@@ -56,6 +59,9 @@ public class Calc3 extends HttpServlet{
 		}
 		
 		Cookie expCookie = new Cookie("exp", exp);
+		if(operator != null && operator.equals("C")) {
+			expCookie.setMaxAge(0);
+		}
 		response.addCookie(expCookie);
 		response.sendRedirect("calcPage");
 		
