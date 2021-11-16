@@ -21,7 +21,7 @@ public class CharacterEncodingFilter implements Filter {
 		request.setCharacterEncoding("UTF-8");
 		// next~
 		chain.doFilter(request, response);
-		System.out.println("after filter");
+		//System.out.println("after filter");
 	}
 
 }
