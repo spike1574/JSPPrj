@@ -1,45 +1,6 @@
-<%@page import="java.util.Date"%>
-<%@page import="java.sql.PreparedStatement"%>
-<%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.Statement"%>
-<%@page import="java.sql.DriverManager"%>
-<%@page import="java.sql.Connection"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
-<%
 
-int id = Integer.parseInt(request.getParameter("id"));
-// 회사
-//String url = "jdbc:oracle:thin:@localhost:1522/orcl";
-// 집
-String url = "jdbc:oracle:thin:@localhost:1521/xe";
-
-String sql = "SELECT * FROM NOTICE WHERE ID = ?";
-
-Class.forName("oracle.jdbc.driver.OracleDriver");
-//회사
-//Connection con = DriverManager.getConnection(url, "NEWLEC", "123456");
-// 집
-Connection con = DriverManager.getConnection(url, "newlec", "123456");
-PreparedStatement st = con.prepareStatement(sql);
-st.setInt(1, id);
-
-ResultSet rs = st.executeQuery();
-
-rs.next();
-
-String title = rs.getString("TITLE"); 	
-String writerId = rs.getString("WRITER_ID");
-Date regdate = rs.getDate("REGDATE");
-String hit = rs.getString("HIT");
-String files = rs.getString("FILES");
-String content = rs.getString("CONTENT");
-
-rs.close();
-st.close();
-con.close();
-%>
 
 <!DOCTYPE html>
 <html>
@@ -190,24 +151,24 @@ con.close();
 							<tbody>
 								<tr>
 									<th>제목</th>
-									<td class="text-align-left text-indent text-strong text-orange" colspan="3"><%=title %></td>
+									<td class="text-align-left text-indent text-strong text-orange" colspan="3">${n.title}</td>
 								</tr>
 								<tr>
 									<th>작성일</th>
-									<td class="text-align-left text-indent" colspan="3"><%=regdate %></td>
+									<td class="text-align-left text-indent" colspan="3">${n.regdate}</td>
 								</tr>
 								<tr>
 									<th>작성자</th>
-									<td><%=writerId %></td>
+									<td>${n.writerId}</td>
 									<th>조회수</th>
-									<td><%=hit %></td>
+									<td>${n.hit}</td>
 								</tr>
 								<tr>
 									<th>첨부파일</th>
-									<td colspan="3"><%=files %></td>
+									<td colspan="3">${n.files}</td>
 								</tr>
 								<tr class="content">
-									<td colspan="4"><%=content %></td>
+									<td colspan="4">${n.content}</td>
 								</tr>
 							</tbody>
 						</table>

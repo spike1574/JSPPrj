@@ -1,27 +1,8 @@
-<%@page import="java.sql.ResultSet"%>
-<%@page import="java.sql.Statement"%>
-<%@page import="java.sql.DriverManager"%>
-<%@page import="java.sql.Connection"%>
+<%@page import="com.newlecture.web.entity.Notice"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-<%
-// 회사
-//String url = "jdbc:oracle:thin:@localhost:1522/orcl";
-// 집
-String url = "jdbc:oracle:thin:@localhost:1521/xe";
-
-String sql = "SELECT * FROM NOTICE";
-
-Class.forName("oracle.jdbc.driver.OracleDriver");
-//회사
-//Connection con = DriverManager.getConnection(url, "NEWLEC", "123456");
-// 집
-Connection con = DriverManager.getConnection(url, "newlec", "123456");
-Statement st = con.createStatement();
-ResultSet rs = st.executeQuery(sql);
-
-%>    
 <!DOCTYPE html>
 <html>
 
@@ -195,17 +176,21 @@ ResultSet rs = st.executeQuery(sql);
 					</thead>
 					<tbody>
 					
-					<% while(rs.next()){ %>		
+					<%
+					List<Notice> list = (List<Notice>)request.getAttribute("list");
+					for(Notice n : list) {
+						pageContext.setAttribute("n", n);
+					%>		
 					<tr>
-						<td><%=rs.getInt("ID")%></td>
-						<td class="title indent text-align-left"><a href="detail.jsp?id=<%=rs.getInt("ID")%>"><%=rs.getString("TITLE") %></a></td>
-						<td><%=rs.getString("WRITER_ID") %></td>
-						<td>
-							<%=rs.getDate("REGDATE") %>		
-						</td>
-						<td><%=rs.getInt("HIT") %></td>
+						<td>${n.id}</td>
+						<td class="title indent text-align-left"><a href="detail?id=${n.id}">${n.title }</a></td>
+						<!--el에서 <td>${n.writerId}</td> 는 저장소에 있는 n값을 가져오는 경우라 
+							request에서 받아온 리스트를 페이지 저장소에 저장하여 사용해야함 -->
+						<td>${n.writerId}</td>
+						<td>${n.regdate}</td>
+						<td>${n.hit}</td>
 					</tr>
-					<% } %>
+					<%} %>
 						
 					</tbody>
 				</table>
@@ -280,8 +265,4 @@ ResultSet rs = st.executeQuery(sql);
     
     </html>
     
-    <%
-    	rs.close();
-        st.close();
-        con.close();
-    %>
+   
