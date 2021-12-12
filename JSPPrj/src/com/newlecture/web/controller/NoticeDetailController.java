@@ -24,9 +24,9 @@ public class NoticeDetailController extends HttpServlet{
 
 		int id = Integer.parseInt(request.getParameter("id"));
 		// È¸»ç
-		String url = "jdbc:oracle:thin:@localhost:1522/orcl";
+		//String url = "jdbc:oracle:thin:@localhost:1522/orcl";
 		// Áý
-		//String url = "jdbc:oracle:thin:@localhost:1521/xe";
+		String url = "jdbc:oracle:thin:@localhost:1521/xe";
 		
 		String sql = "SELECT * FROM NOTICE WHERE ID = ?";
 		

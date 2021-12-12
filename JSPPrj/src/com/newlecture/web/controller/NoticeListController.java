@@ -24,55 +24,8 @@ public class NoticeListController extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		List<Notice> list = new ArrayList<>();
-		// 회사
-		String url = "jdbc:oracle:thin:@localhost:1522/orcl";
-		// 집
-		//String url = "jdbc:oracle:thin:@localhost:1521/xe";
-
-		String sql = "SELECT * FROM NOTICE";
-
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			//회사
-			//Connection con = DriverManager.getConnection(url, "NEWLEC", "123456");
-			// 집
-			Connection con = DriverManager.getConnection(url, "newlec", "123456");
-			Statement st = con.createStatement();
-			ResultSet rs = st.executeQuery(sql);
-
-			while(rs.next()){
-				int id = rs.getInt("ID");
-				String title = rs.getString("TITLE"); 	
-				String writerId = rs.getString("WRITER_ID");
-				Date regdate = rs.getDate("REGDATE");
-				String hit = rs.getString("HIT");
-				String files = rs.getString("FILES");
-				String content = rs.getString("CONTENT");
-				
-				Notice notice = new Notice(
-						id,
-						title,
-						writerId,
-						regdate,
-						hit,
-						files,
-						content
-				);
-				list.add(notice);
-			}
-
-			rs.close();
-			st.close();
-			con.close();
-
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		NoticeService service = new NoticeService();
+		List<Notice> list = service.getList(?);
 		
 		request.setAttribute("list", list);
 		
