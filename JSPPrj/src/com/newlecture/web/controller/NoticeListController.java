@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.newlecture.web.entity.Notice;
+import com.newlecture.web.service.NoticeService;
 
 @WebServlet("/notice/list")
 public class NoticeListController extends HttpServlet{
@@ -25,7 +26,7 @@ public class NoticeListController extends HttpServlet{
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		NoticeService service = new NoticeService();
-		List<Notice> list = service.getList(?);
+		List<Notice> list = service.getNoticeList();
 		
 		request.setAttribute("list", list);
 		

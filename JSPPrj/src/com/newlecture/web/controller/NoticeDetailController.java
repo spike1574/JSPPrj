@@ -24,18 +24,16 @@ public class NoticeDetailController extends HttpServlet{
 
 		int id = Integer.parseInt(request.getParameter("id"));
 		// 회사
-		//String url = "jdbc:oracle:thin:@localhost:1522/orcl";
+		String url = "jdbc:oracle:thin:@localhost:1522/orcl";
 		// 집
-		String url = "jdbc:oracle:thin:@localhost:1521/xe";
+		//String url = "jdbc:oracle:thin:@localhost:1521/xe";
 		
 		String sql = "SELECT * FROM NOTICE WHERE ID = ?";
 		
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			//회사
-			//Connection con = DriverManager.getConnection(url, "NEWLEC", "123456");
-			// 집
-			Connection con = DriverManager.getConnection(url, "newlec", "123456");
+			
+			Connection con = DriverManager.getConnection(url, "NEWLEC", "123456");
 			PreparedStatement st = con.prepareStatement(sql);
 			st.setInt(1, id);
 			
