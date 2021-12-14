@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,6 +42,9 @@ public class NoticeService {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			Connection con = DriverManager.getConnection(url, "NEWLEC", "123456");
 			PreparedStatement st = con.prepareStatement(sql);
+			//System.out.println("query :" + query);
+			//System.out.println("query2 :" + 1+(page-1)*10);
+			//System.out.println("query3 :" + page*10);
 			st.setString(1, "%"+query+"%");
 			st.setInt(2, 1+(page-1)*10);
 			st.setInt(3, page*10);
@@ -110,8 +112,10 @@ public class NoticeService {
 			st.setString(1, "%"+query+"%");
 			
 			ResultSet rs = st.executeQuery();
-
-			count = rs.getInt("count");
+			
+			if(rs.next()) {
+				count = rs.getInt("count");
+			}
 			
 			rs.close();
 			st.close();
