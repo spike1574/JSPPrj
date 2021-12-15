@@ -187,7 +187,7 @@
 					<c:forEach var="n" items="${list }">
 					<tr>
 						<td>${n.id}</td>
-						<td class="title indent text-align-left"><a href="detail?id=${n.id}">${n.title }</a></td>
+						<td class="title indent text-align-left"><a href="detail?id=${n.id}">${n.title }</a><span>[3]</span></td>
 						<!--el에서 <td>${n.writerId}</td> 는 저장소에 있는 n값을 가져오는 경우라 
 							request에서 받아온 리스트를 페이지 저장소에 저장하여 사용해야함 -->
 						<td>${n.writerId}</td>
