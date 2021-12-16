@@ -1,4 +1,4 @@
-package com.newlecture.web.controller;
+package com.newlecture.web.controller.admin.notice;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -17,10 +17,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.newlecture.web.entity.Notice;
+import com.newlecture.web.entity.NoticeView;
 import com.newlecture.web.service.NoticeService;
 
-@WebServlet("/notice/list")
-public class NoticeListController extends HttpServlet{
+@WebServlet("/admin/notice/list")
+public class ListController extends HttpServlet{
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -48,7 +49,7 @@ public class NoticeListController extends HttpServlet{
 		//System.out.println(page);
 		
 		NoticeService service = new NoticeService();
-		List<Notice> list = service.getNoticeList(field, query, page);
+		List<NoticeView> list = service.getNoticeList(field, query, page);
 		int count = service.getNoticeCount(field, query);
 		
 		request.setAttribute("list", list);
@@ -56,7 +57,7 @@ public class NoticeListController extends HttpServlet{
 		
 		//forward
 		request
-		.getRequestDispatcher("/WEB-INF/view/notice/list.jsp")
+		.getRequestDispatcher("/WEB-INF/view/admin/board/notice/list.jsp")
 		.forward(request, response);
 		    
 	}
