@@ -155,7 +155,8 @@
 						</fieldset>
 					</form>
 				</div>
-
+				
+			<form action="list" method="post">
 				<div class="notice margin-top">
 					<h3 class="hidden">공지사항 목록</h3>
 					<table class="table">
@@ -180,8 +181,8 @@
 								<td>${n.writerId}</td>
 								<td><fmt:formatDate pattern="yyyy-MM-dd" value="${n.regdate}"/></td>
 								<td>${n.hit}</td>
-								<td><input type="checkbox" name="open"></td>
-								<td><input type="checkbox" name="del"></td>
+								<td><input type="checkbox" name="open-id" value="${n.id}"></td>
+								<td><input type="checkbox" name="del-id" value="${n.id}"></td>
 							</tr>
 							</c:forEach>
 						</tbody>
@@ -191,18 +192,18 @@
 				<c:set var="page" value="${(empty param.p) ? 1 : param.p}"/>
 				<c:set var="startNum" value="${page-(page-1)%5 }"/>
 				<c:set var="lastNum" value="${fn:substringBefore(Math.ceil(count/10), '.') }"/>
-			
-			<div class="indexer margin-top align-right">
-				<h3 class="hidden">현재 페이지</h3>
-				<div><span class="text-orange text-strong">${(empty param.p)?1:param.p }</span> / ${lastNum } pages</div>
-			</div>
+				
+				<div class="indexer margin-top align-right">
+					<h3 class="hidden">현재 페이지</h3>
+					<div><span class="text-orange text-strong">${(empty param.p)?1:param.p }</span> / ${lastNum } pages</div>
+				</div>
 
 				<div class="text-align-right margin-top">
 					<input type="submit" class="btn-text btn-default" value="일괄공개">
 					<input type="submit" class="btn-text btn-default" value="일괄삭제">
 					<a class="btn-text btn-default" href="reg.html">글쓰기</a>				
 				</div>
-
+			</form>
 				<div class="margin-top align-center pager">	
 		
 				<div>
