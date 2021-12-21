@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.util.Collection;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -39,37 +40,53 @@ public class RegController extends HttpServlet{
 		String content = request.getParameter("content");
 		String isOpen = request.getParameter("open");
 		
-		// multi-part로 전송해서 part의 이름으로 바이너리 형식으로 value값을 가져옴
-		Part filePart = request.getPart("file");
-		// 바이너리value값에서 파일명을 가져옴
-		String fileName = filePart.getSubmittedFileName();
-		InputStream fis = filePart.getInputStream();
+		// 다중파일 
+		Collection<Part> parts = request.getParts();
+		StringBuilder builder = new StringBuilder();
 		
-		// 파일이 저장되는 실제 경로를 나타냄
-		String realPath = request.getServletContext().getRealPath("/upload");
-		System.out.println(realPath);
 		
-		// read는 바이트씩 단위로 읽어드림 끝까지 다 읽었을경우 -1 반환 
-		//int b = fis.read();
+		for(Part p : parts) {
+			if(!p.getName().equals("file")) {
+				continue;
+			}
+			
+			// multi-part로 전송해서 part의 이름으로 바이너리 형식으로 value값을 가져옴
+			Part filePart = p;
+			// 바이너리value값에서 파일명을 가져옴
+			String fileName = filePart.getSubmittedFileName();
+			builder.append(fileName);
+			builder.append(",");
+			
+			InputStream fis = filePart.getInputStream();
+			
+			// 파일이 저장되는 실제 경로를 나타냄
+			String realPath = request.getServletContext().getRealPath("/upload");
+			System.out.println(realPath);
+			
+			// read는 바이트씩 단위로 읽어드림 끝까지 다 읽었을경우 -1 반환 
+			//int b = fis.read();
+			
+			// File.spparator를 사용하는 이유 : 윈도우나 유닉스 os별로  파일구분하는 (ex: '\') 구분자가 달라 separator함수 사용
+			String filePath = realPath + File.separator + fileName;
+			
+			FileOutputStream fos = new FileOutputStream(filePath);
+			
+			// read()는 바이트 단위로 읽어드림 다 읽었을경우 -1 반환
+			// read()는 효율적이지 못해 오버로드 함수인 byte[]로 받는 함수를 사용
+			byte[] buf = new byte[1024];
+			int size = 0;
+			while((size = fis.read(buf)) != -1) {
+				//fos.write(buf) 는 1555 바이트를 예로 든다면 한번돌고 나머지 531바이트때 문제가 생김
+				//그래서 0~size만큼으로 사용
+				fos.write(buf, 0, size);
+			}
+			
+			fos.close();
+			fis.close();
 		
-		// File.spparator를 사용하는 이유 : 윈도우나 유닉스 os별로  파일구분하는 (ex: '\') 구분자가 달라 separator함수 사용
-		String filePath = realPath + File.separator + fileName;
-		
-		FileOutputStream fos = new FileOutputStream(filePath);
-		
-		// read()는 바이트 단위로 읽어드림 다 읽었을경우 -1 반환
-		// read()는 효율적이지 못해 오버로드 함수인 byte[]로 받는 함수를 사용
-		byte[] buf = new byte[1024];
-		int size = 0;
-		while((size = fis.read(buf)) != -1) {
-			//fos.write(buf) 는 1555 바이트를 예로 든다면 한번돌고 나머지 531바이트때 문제가 생김
-			//그래서 0~size만큼으로 사용
-			fos.write(buf, 0, size);
 		}
-		
-		fos.close();
-		fis.close();
-		
+		// 마지막 ,삭제
+		builder.delete(builder.length()-1, builder.length());
 		
 		
 		boolean pub = false;
@@ -82,9 +99,10 @@ public class RegController extends HttpServlet{
 		notice.setContent(content);
 		notice.setPub(pub);
 		notice.setWriterId("newlec");
+		notice.setFiles(builder.toString());
 		
 		NoticeService service = new NoticeService();
-		//int result = service.insertNotice(notice);
+		int result = service.insertNotice(notice);
 		
 		response.sendRedirect("list");
 	}

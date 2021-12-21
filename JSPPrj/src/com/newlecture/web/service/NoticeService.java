@@ -16,9 +16,9 @@ import com.newlecture.web.entity.NoticeView;
 public class NoticeService {
 	
 	// È¸»ç
-//	String url = "jdbc:oracle:thin:@localhost:1522/orcl";
+	String url = "jdbc:oracle:thin:@localhost:1522/orcl";
 	// Áý
-	String url = "jdbc:oracle:thin:@localhost:1521/xe";
+//	String url = "jdbc:oracle:thin:@localhost:1521/xe";
 	
 	public int removeNoticeAll(int[] ids){
 		
