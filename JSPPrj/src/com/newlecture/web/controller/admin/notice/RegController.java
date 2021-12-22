@@ -49,6 +49,10 @@ public class RegController extends HttpServlet{
 			if(!p.getName().equals("file")) {
 				continue;
 			}
+			if(p.getSize() == 0 ) {
+				continue;
+			}
+			
 			
 			// multi-part로 전송해서 part의 이름으로 바이너리 형식으로 value값을 가져옴
 			Part filePart = p;
@@ -62,6 +66,12 @@ public class RegController extends HttpServlet{
 			// 파일이 저장되는 실제 경로를 나타냄
 			String realPath = request.getServletContext().getRealPath("/upload");
 			System.out.println(realPath);
+			
+			File path = new File(realPath);
+			if(!path.exists()) {
+				path.mkdirs();
+			}
+			
 			
 			// read는 바이트씩 단위로 읽어드림 끝까지 다 읽었을경우 -1 반환 
 			//int b = fis.read();

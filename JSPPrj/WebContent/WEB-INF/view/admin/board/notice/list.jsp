@@ -173,6 +173,10 @@
 						</thead>
 						<tbody>
 							<c:forEach var="n" items="${list }">
+							<c:set var="open" value=""/>
+							<c:if test="${n.pub}">
+								<c:set var="open" value="checked"/>
+							</c:if>
 							<tr>
 								<td>${n.id}</td>
 								<td class="title indent text-align-left"><a href="detail?id=${n.id}">${n.title }</a><span>[${n.cmtCount }]</span></td>
@@ -181,7 +185,7 @@
 								<td>${n.writerId}</td>
 								<td><fmt:formatDate pattern="yyyy-MM-dd" value="${n.regdate}"/></td>
 								<td>${n.hit}</td>
-								<td><input type="checkbox" name="open-id" value="${n.id}"></td>
+								<td><input type="checkbox" name="open-id" ${open} value="${n.id}"></td>
 								<td><input type="checkbox" name="del-id" value="${n.id}"></td>
 							</tr>
 							</c:forEach>
@@ -199,6 +203,11 @@
 				</div>
 
 				<div class="text-align-right margin-top">
+					<c:set var="ids" value=""/>
+					<c:forEach var="n" items="${list }">
+						<c:set var="ids" value="${ids } ${n.id }"/>
+					</c:forEach>
+					<input type="text" value="${ids }">
 					<input type="submit" class="btn-text btn-default" name="cmd" value="일괄공개">
 					<input type="submit" class="btn-text btn-default" name="cmd" value="일괄삭제">
 					<a class="btn-text btn-default" href="reg">글쓰기</a>				
