@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -29,20 +30,46 @@ public class ListController extends HttpServlet{
 		String[] openIds = request.getParameterValues("open-id");
 		String[] delIds = request.getParameterValues("del-id");
 		String cmd = request.getParameter("cmd");
+		String ids_ = request.getParameter("ids");
+		String[] ids = ids_.trim().split(" ");
+		
+		
+		NoticeService service = new NoticeService();
 		
 		switch(cmd) {
 		case "일괄공개" :
 			for(String openId : openIds) {
 				System.out.printf("openId : %s\n", openId);
 			}
+			
+			// asList는 배열을 리스트로 바꾸는 함수 (새로생성해서 객체에 담지않으면 정적인상태)
+			List<String> oids = Arrays.asList(openIds);
+			
+			List<String> cids = new ArrayList(Arrays.asList(ids));
+			cids.removeAll(oids);
+			System.out.println(cids);
+			
+			// Transaction 처리
+			service.pubNoticeAll(oids, cids); 
+			
+			for(int i=0; i<ids.length; i++) {
+				//1. 현재 id가 open 된 상태냐
+				if(oids.contains(ids[i])) {
+					
+				} else {
+					
+				}
+			}
+			
+			
 			break;
 		case "일괄삭제" :
-			NoticeService service = new NoticeService();
-			int[] ids = new int[delIds.length];
+			
+			int[] ids1 = new int[delIds.length];
 			for(int i=0; i<delIds.length; i++) {
-				ids[i] = Integer.parseInt(delIds[i]);
+				ids1[i] = Integer.parseInt(delIds[i]);
 			}
-			int result = service.deleteNoticeAll(ids);
+			int result = service.deleteNoticeAll(ids1);
 			break;
 		}
 		
